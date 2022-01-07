@@ -8,6 +8,41 @@ struct node{
 };
 typedef struct node node_t;
 
+// create node
+node_t *create_node(int data){
+	node_t *new_node = malloc(sizeof(node_t));	
+	new_node->data = data; 
+	new_node->next = NULL;
+	return new_node;
+}
+
+node_t *insert_at_head(node_t **head, node_t *new_node){
+	new_node->next = *head;
+	*head = new_node;
+	return new_node;
+}
+
+node_t *insert_at_tail(node_t **head, node_t *new_node){
+	node_t *tail = *head;
+	while(tail->next != NULL){
+		tail = tail->next;
+	}
+	new_node->next = NULL;
+	tail->next = new_node;
+	return new_node;
+}
+
+node_t *find_node(node_t *head, int value){
+	node_t *temp = head;
+	while(temp != NULL){
+		if(temp->data == value){
+			return temp;
+		}
+		temp = temp->next;
+	}
+	return NULL;
+}
+
 void printlist(node_t *head){
 	node_t *temp = head;
 
@@ -19,18 +54,20 @@ void printlist(node_t *head){
 }
 
 int main(){
-	node_t n1, n2, n3;
-	node_t *head;
+	node_t *head = NULL;
+	node_t *temp;
 
-	n1.data = 9;
-	n2.data = 83;
-	n3.data = 29;
-
-	head = &n1;
-	n1.next = &n2;
-	n2.next = &n3;
-	n3.next = NULL;
-
+	temp = create_node(32);
+	insert_at_head(&head, temp);
+	temp = create_node(15);
+	insert_at_head(&head, temp);
+	temp = create_node(40);
+	insert_at_tail(&head, temp);
+	temp = create_node(35);
+	insert_at_tail(&head, temp);
 	printlist(head);
+
+	temp = find_node(head, 40);
+	printf("found value %d\n", temp->data);
 	return 0;
 }
